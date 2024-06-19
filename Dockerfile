@@ -1,4 +1,4 @@
-FROM golang:1.16.2-alpine3.13 as builder
+FROM golang:1.22.4-bookworm as builder
 WORKDIR /app
 COPY . ./
 # This is where one could build the application code as well.
@@ -8,15 +8,15 @@ FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
-RUN apk update && apk add curl
-RUN apk update && apk fetch gnupg && apk add gnupg && gpg --keyserver https://pkgs.tailscale.com/stable/ubuntu/xenial.asc --list-keys
-RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.list | tee /etc/apt/sources.list.d/tailscale.list
-RUN apk update && apk add tailscale
+RUN apt-get update && apt-get install sudo curl
+RUN sudo mkdir -p --mode=0755 /usr/share/keyrings
+RUN curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+RUN curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+RUN sudo apt-get update && sudo apt-get install tailscale
 COPY . ./
 
-
-FROM alpine:latest
-RUN apk update && apk add ca-certificates openssh sudo && rm -rf /var/cache/apk/*
+FROM debian:bookworm
+RUN apt-get update && apt-get install ca-certificates openssh sudo && rm -rf /var/cache/apk/*
 
 # Copy binary to production image
 COPY --from=builder /app/start.sh /app/start.sh
