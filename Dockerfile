@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
 RUN apk update && apk add curl
-RUN apk update && apk fetch gnupg && apk add gnupg && gpg --keyservers https://pkgs.tailscale.com/stable/ubuntu/xenial.asc
+RUN apk update && apk fetch gnupg && apk add gnupg && gpg --keyserver https://pkgs.tailscale.com/stable/ubuntu/xenial.asc
 RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.list | tee /etc/apt/sources.list.d/tailscale.list
 RUN apk update && apk add tailscale
 COPY . ./
