@@ -8,10 +8,10 @@ FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
-RUN apt-get -y update; apt-get -y install curl
+RUN apk update && apk add curl
 RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.asc | sudo apt-key add -
 RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-RUN apt-get update && sudo apt-get install tailscale
+RUN apk update && apk add tailscale
 COPY . ./
 
 
