@@ -16,7 +16,7 @@ RUN sudo apt-get update && sudo apt-get install tailscale
 COPY . ./
 
 FROM debian:bookworm
-RUN apt-get update && apt-get install ca-certificates sudo && rm -rf /var/cache/apk/*
+RUN apt-get update && apt-get -y install ca-certificates openssh-server sudo && rm -rf /var/cache/apk/*
 
 # Copy binary to production image
 COPY --from=builder /app/start.sh /app/start.sh
