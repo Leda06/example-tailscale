@@ -4,7 +4,7 @@ COPY . ./
 # This is where one could build the application code as well.
 
 
-FROM alpine:latest as tailscale
+FROM debian:bookworm as tailscale
 WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
