@@ -8,8 +8,9 @@ FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
-RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
-  tar xzf ${TSFILE} --strip-components=1
+RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.asc | sudo apt-key add -
+RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/xenial.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+RUN sudo apt-get update && sudo apt-get install tailscale
 COPY . ./
 
 
