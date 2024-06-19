@@ -20,8 +20,8 @@ RUN apt-get update && apt-get -y install ca-certificates openssh-server sudo && 
 # Copy binary to production image
 COPY --from=builder /app/start.sh /app/start.sh
 COPY --from=builder /app/my-app /app/my-app
-COPY --from=tailscale /usr/lib/tailscaled /app/tailscaled
-COPY --from=tailscale /usr/lib/tailscale /app/tailscale
+COPY --from=tailscale /usr/sbin/tailscaled /app/tailscaled
+COPY --from=tailscale /usr/bin/tailscale /app/tailscale
 
 RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 
