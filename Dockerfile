@@ -8,7 +8,7 @@ FROM debian:bookworm as tailscale
 WORKDIR /app
 COPY . ./
 ENV TSFILE=tailscale_1.16.2_amd64.tgz
-RUN apt-get update && apt-get install sudo curl
+RUN apt-get update && apt-get -y install sudo curl
 RUN sudo mkdir -p --mode=0755 /usr/share/keyrings
 RUN curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
 RUN curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
